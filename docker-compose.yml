@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  postgres:
+    container_name: postgresql
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres:/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - app-net
+    restart: always
+  nodejs:
+    container_name: nodejs_app
+    image: node-web-app:latest
+    ports:
+      - "3000:3000"
+    restart: always
+    networks:
+      - app-net
+
+  nginx-proxy:
+    image: nginx:latest
+    container_name: nginx-proxy
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      #- ./www:/var/www:ro
+      - ./conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - app-net
+
+volumes:
+  postgres:
+
+# an access from the host machine (bridge network)
+networks:
+  #postgres:
+  #  driver: bridge
+  app-net:
+    driver: bridge
