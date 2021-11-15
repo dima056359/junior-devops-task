@@ -1,4 +1,14 @@
 
+# Requirements
+
+Задача: с помощью одного docker-compose файла поднять стек состоящий из трех сервисов:
+
+1. PostgreSQL - база данных. Должна быть возможность подключения к этой базе из хост системы. Прописать именованный volume для хранения данных. Добавить user, password, database в docker-compose файл.
+2. Написать Dockerfile для [node.js приложения](https://nodejs.org/en/docs/guides/getting-started-guide/). Требования:
+    - Необходимо копировать все файлы из текущего каталога в собираемый докер образ, за исключением папки node_modules и её содержимого
+    - Для установки всех зависимостей необходимо выполнить команду `npm install`
+    - Приложение должно стартовать при старте контейнера. Команда для старта приложения `npm start`
+3. Третий сервис - Nginx. Nodejs приложение слушает на 3000 порту. Третим сервисом необходимо поднять контейнер с nginx, который будет проксировать соединения с 80 порта в хост системе на 3000 порт приложения NodeJS
 
 # How to run
 
@@ -63,11 +73,8 @@ nginx-proxy    | 172.23.0.1 - - [10/Nov/2021:22:56:03 +0000] "GET / HTTP/1.1" 20
 ...
 ```
 ```
-Dmytros-MacBook-Pro:~ dmytroh$ curl http://localhost:3000
-Hello WorldDmytros-MacBook-Pro:~ dmytroh$ 
-...
-nginx-proxy    | 172.23.0.1 - - [10/Nov/2021:22:56:03 +0000] "GET / HTTP/1.1" 200 11 "-" "curl/7.77.0" "-"
-...
+Dmytros-MacBook-Pro:junior-devops-task dmytroh$ curl http://localhost:3000
+Hello WorldDmytros-MacBook-Pro:~ dmytroh$
 ```
 
 That's it. Thank you for your attention.
